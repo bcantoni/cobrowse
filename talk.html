@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<style type="text/css">
+
+iframe#main {
+  width: 800px;
+  height: 600px;
+}
+
+</style>
+
+<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+<script src="http://easywebsocket.org/easyWebSocket.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+    var socket = new EasyWebSocket("ws://example.com/resource9");
+    socket.onopen = function(){
+	socket.send("http://search.yahoo.com");
+    };
+        var iframe = $('iframe#main');
+
+        var locations = ['http://bostonglobe.com', 'http://bing.com/robots.txt', 'http://cantoni.mobi', 'http://duckduckgo.com'];
+        var len = locations.length;
+        var iframe = $('iframe#main');
+        var i = 0;
+        var intv = setInterval(function () {
+            socket.send (locations[++i % len]);
+            console.log ("sending url");
+        }, 2000);
+        setTimeout(function() {
+            window.clearInterval(intv);
+            console.log("done");
+        }, 20000);
+      });
+</script>
+
+</head>
+<body>
+<p>Talker</p>
+
+
+</body>
+</html>

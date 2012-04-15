@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+<style type="text/css">
+
+iframe#main {
+  width: 800px;
+  height: 600px;
+  border: dashed gray 1px;
+}
+
+</style>
+
+<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+<script src="http://easywebsocket.org/easyWebSocket.min.js"></script>
+<script>
+    var action = true;
+
+    // listen for new URLs
+    var socket = new EasyWebSocket("ws://example.com/resource9");
+    socket.onmessage = function(event) {
+        action = true;
+        $("iframe#main").attr('src', event.data);
+	console.log("received "+ event.data)
+    }
+
+    // set up all iframe handling logic
+    $(document).ready(function(){
+        // initial sizing
+        resizeFrame();
+
+        // resize with browser
+        $(window).resize(function() {
+           resizeFrame();
+        });
+
+        // if anything clicked in iframe, send it out to all
+        var iframe=$("iframe#main");
+        $(iframe).load(function() {
+           if (action) {
+               action = false;
+           } else {
+               var url = $(iframe).attr("src");
+               console.log("iframe load: " + url);
+               // socket.send(url);
+           }
+        });
+/*
+        $(iframe).load(function() {
+           console.log("iframe load: " + $(iframe).attr('src'));
+        });
+
+        var locations = ['http://bing.com/robots.txt', 'http://cantoni.mobi', 'http://duckduckgo.com'];
+        var len = locations.length;
+        var iframe = $('iframe#main');
+        var i = 0;
+        var intv = setInterval(function () {
+            $(iframe).attr('src', locations[++i % len]);
+        }, 2500);
+        setTimeout(function() {
+            window.clearInterval(intv);
+            console.log("done");
+        }, 12000);
+*/
+      });
+
+    // resize iframe to match window size, minus a bit on top
+    function resizeFrame() {
+           var w = $(window);
+           var i = $("iframe#main");
+           $(i).css("height", (w.height() - 100) + "px");
+           $(i).css("width", w.width() + "px");
+    }
+</script>
+
+</head>
+<body>
+<p>Listener</p>
+
+<iframe id="main" src="http://search.yahoo.com" frameBorder="0"></iframe>
+
+
+</body>
+</html>

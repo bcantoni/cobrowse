@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<style type="text/css">
+
+iframe#main {
+  width: 800px;
+  height: 600px;
+}
+
+</style>
+
+<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var iframe = $('iframe#main');
+
+        $(iframe).load(function() {
+           console.log("iframe load: " + $(iframe).attr('src'));
+        });
+
+        var locations = ['http://bing.com/robots.txt', 'http://cantoni.mobi', 'http://duckduckgo.com'];
+        var len = locations.length;
+        var iframe = $('iframe#main');
+        var i = 0;
+        var intv = setInterval(function () {
+            $(iframe).attr('src', locations[++i % len]);
+        }, 2500);
+        setTimeout(function() {
+            window.clearInterval(intv);
+            console.log("done");
+        }, 12000);
+      });
+</script>
+
+</head>
+<body>
+<p>Frames test - should automatically rotate every few seconds...</p>
+
+<iframe id="main" src="http://search.yahoo.com"></iframe>
+
+
+</body>
+</html>
